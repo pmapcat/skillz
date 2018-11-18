@@ -12,7 +12,6 @@ from django.db import transaction
 
 import ipdb
 
-
 def resave_collection(modeladmin, request, queryset):
   with transaction.atomic():
     for item in queryset:

@@ -19,6 +19,11 @@ from django.db import models
 class SpreadSheet(models.Model):
   child = models.CharField(verbose_name=_(u"Имя ребенка"),max_length=1000,db_index=True)
   age   = models.IntegerField(verbose_name=_(u"Возраст"),blank=True,null=True)
+
+  def skill_instances_amount(self):
+    return self.skill_instances.count()
+  skill_instances_amount.short_description = _(u"Количество наблюдений навыков")
+  
   class Meta:
     verbose_name = _(u"Тетрадь наблюдений")
     verbose_name_plural = _(u"Тетради наблюдений")
@@ -36,7 +41,7 @@ class SkillType(models.Model):
   
   
 class Skill(models.Model):
-  name                      = models.CharField(verbose_name=_(u"Название навыка"),max_length=200,db_index=True)
+  name                      = models.CharField(verbose_name=_(u"Название навыка"),max_length=200,db_index=True,unique=True)
   taxonomy_type             = models.ForeignKey(SkillType,verbose_name=_(u"Название коллекции"),on_delete=models.CASCADE,related_name='skills')
   max_level                 = models.IntegerField(verbose_name=_(u"Максимальный уровень"),db_index=True)
   previous_categories       = models.ManyToManyField("Skill",verbose_name=_(u"Предыдущие навыки"),blank=True)
@@ -84,8 +89,5 @@ class SkillInstance(models.Model):
   def clean(self):
     if self.skill_level > self.skill.max_level:
       raise ValidationError(_(u"Уровень скилла больше максимального: "+str(+self.skill.max_level)))
-      
-    
-
   def __unicode__(self):
-    return self.skill.name  
+    return self.skill.previous_categories_text
