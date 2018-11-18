@@ -7,9 +7,14 @@
 # @@@@@@ At 2018-11-18 23:29 <thereisnodotcollective@gmail.com> @@@@@@@@@@@@@@@@@@@@@@@@
 
 from __future__ import unicode_literals
+from django.utils.translation import ugettext_lazy as _
+from django.db import transaction
 
-from django.apps import AppConfig
+import ipdb
 
 
-class SheetsConfig(AppConfig):
-    name = 'sheets'
+def resave_collection(modeladmin, request, queryset):
+  with transaction.atomic():
+    for item in queryset:
+      item.save()
+resave_collection.short_description = _(u"Обновить елку")
