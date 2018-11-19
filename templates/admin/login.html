@@ -1,0 +1,21 @@
+{% extends "admin/login.html" %}
+{% load i18n static %}
+
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="{% static "admin/css/login.css" %}" />
+<style>
+  #container {
+   width: 300px !important;
+   padding:3em !important;
+  }
+  #site-name {
+    font-size: 5em !important;
+  }
+  #content-main {
+    box-shadow: none;
+  }
+</style>
+{{ form.media }}
+{% endblock %}
+
+
+

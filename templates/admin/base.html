@@ -1,0 +1,204 @@
+{% extends "admin/base.html" %}
+{% load  static i18n %}
+
+{% block stylesheet %} {% static "admin/css/base.css" %} {% endblock %}
+{% block footer %}<div id="footer"></div>{% endblock %}
+{% block extrastyle %}
+<link href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto+Slab&amp;subset=cyrillic" rel="stylesheet">
+<style>
+  h1,h2,h3,h4,h5,h6,caption,#site-name>a,.object-tools>li>.addlink,#user-tools>a,#user-tools>strong {
+    font-family: 'Roboto Slab', serif !important;
+  }
+  * {
+    font-family: 'Open Sans', sans-serif !important;
+  }
+
+#container {
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+@media (min-width: 768px) {
+  #container {
+    width: 750px;
+  }
+  .form-row {
+    width: 500px;
+  }
+  
+}
+@media (min-width: 992px) {
+  #container {
+    width: 970px !important;
+  }
+  .form-row {
+    width: 750px;
+  }
+  
+}
+@media (min-width: 1200px) {
+  #container {
+    width: 1170px !important;
+  }
+  .form-row {
+    width: 970px;
+  }
+  
+}
+
+  
+  
+.breadcrumbs, caption {
+  background: white !important;
+  color: black !important;
+}
+.breadcrumbs > a {
+  color: #447e9b !important;
+}
+caption > a {
+  color: #447e9b !important;
+}
+caption > a:hover {
+  text-decoration: none !important;
+  color: #447e9b !important;
+}
+
+.object-tools > li > .addlink {
+    background: white !important;
+    color: white !important;
+    font-weight: 900;
+    background: red !important;
+    box-shadow: 1px 1px 20px 0px #8080803b;
+}
+
+.object-tools > li > .addlink:hover {
+    background: #ec8080 !important
+}
+  
+#content-main {
+  padding: 0.5em;
+  box-shadow: 1px 1px 20px 0px #8080803b;
+}
+  * {
+    border-radius: 0px !important;
+  }
+  #recent-actions-module {
+    background: white !important;
+    padding: 0.5em;
+    box-shadow: 1px 1px 20px 0px #8080803b;
+  }
+  #recent-actions-module h2 {
+    border: none !important;
+    padding-bottom: 0.3em !important;
+    margin-bottom: 0.3em !important;
+  }
+  #content-related {
+    background: white !important;
+  }
+  h1 {
+    font-weight: 900;
+    font-size: 3em;
+    padding-bottom: 1em;
+    color: #aaaaaa;
+  }
+  h2 {
+    font-weight: 600;
+    font-size: 1em;
+    color: #aaaaaa;
+  }
+  .submit-row {
+    background: white !important;
+    border: none !important;
+  }
+  
+  #toolbar {
+    background: white !important;
+    border: none !important;
+  }
+  #changelist-search {
+    background: white !important;
+  }
+  #changelist-filter li.selected  {
+    border-left: 5px solid red !important;
+  }
+  #changelist-filter {
+    padding:0.5em;
+    box-shadow: 1px 1px 20px 0px #8080803b;
+    background: white !important;
+  }  
+  #changelist-filter * {
+    background: white;
+    color: black;
+  }
+  #header {
+    background: white;
+    color: black;
+  }
+
+
+#user-tools {
+  text-transform: none !important;
+  font-size: 1em;
+  font-weight: 600;
+}
+#user-tools a {
+  color: #447e9b !important;
+}
+
+#user-tools > a:hover {
+  color: black !important;
+  text-decoration: none !important;
+}
+
+.row1,.row2 {
+  border: none;
+  background: white !important;
+  }
+  
+td,th {
+  border: none !important;
+ word-wrap: break-word !important;
+  }
+  td {
+    white-space: unset !important;
+  }
+  option {
+    white-space: unset !important;
+  }
+#site-name > a {
+  color: black !important;
+  font-weight: 900 !important;
+  word-wrap: break-word;
+}
+
+#site-name > a:hover {
+  color: #9a9797 !important
+}
+
+</style>
+{% endblock %}
+{% block branding %} {% endblock %}
+
+{% block usertools %}
+{% if has_permission %}
+<div id="user-tools">
+  {% block welcome-msg %}
+  <strong>{% firstof user.get_short_name user.get_username %}</strong> ·
+  {% endblock %}
+  {% block userlinks %}
+  {% if user.is_active and user.is_staff %}
+  {% url 'django-admindocs-docroot' as docsroot %}
+  {% if docsroot %}
+  <a href="{{ docsroot }}">{% trans 'Documentation' %}</a> 
+  {% endif %}
+  {% endif %}
+  {% if user.has_usable_password %}
+  <a href="{% url 'admin:password_change' %}">{% trans 'Change password' %}</a> ·
+  {% endif %}
+  <a href="{% url 'admin:logout' %}">{% trans 'Log out' %}</a>
+  {% endblock %}
+</div>
+
+{% endif %}
+{% endblock %}
