@@ -13,7 +13,6 @@ from django.urls import reverse
 from django.contrib import admin
 from .actions  import resave_collection
 from django.utils.translation import ugettext_lazy as _
-from .consts import FIX_DELIM
 
 from .list_filters import PreviousSkillsFilter
 
@@ -43,8 +42,9 @@ class SkillAdmin(admin.ModelAdmin):
   
 
   def _get_previous_categories_text_link(self, obj):
-    return u" » ".join(["<a href='"+reverse('admin:sheets_skill_changelist') + "?q=" + i + "'>" + i + "</a>" for i in obj.previous_categories_text.split(FIX_DELIM)])
+    return u" » ".join(["<a href='"+reverse('admin:sheets_skill_changelist') + "?q=" + i + "'>" + i + "</a>" for i in obj.previous_categories_text_split()])
   _get_previous_categories_text_link.allow_tags = True
+  _get_previous_categories_text_link.short_description = _(u"Предыдущие категории")
   
   filter_horizontal = ('previous_categories',)
   class Meta:
@@ -63,8 +63,14 @@ class SkillInstanceInLine(admin.StackedInline):
   readonly_fields = ('max_level','date_added','skill_description')
     
 class SpreadSheetAdmin(admin.ModelAdmin):
-  list_display = ['child','age','skill_instances_amount']
+  list_display = ['child','age','skill_instances_amount','watch_sheet']
   inlines = [SkillInstanceInLine]
+
+  def watch_sheet(self,model_instance):
+    return "<a href='%s'>%s</a>"%(reverse("sheet_view",kwargs={"pk":model_instance.pk}),_(u"Карта"))
+  watch_sheet.short_description = _(u"Смотреть")
+  watch_sheet.allow_tags = True
+
   class Meta:
     model=SpreadSheet
 
@@ -78,7 +84,7 @@ class SkillInstanceAdmin(admin.ModelAdmin):
   max_level.short_description = _(u"Максимальный уровень")
   
   def _get_previous_categories_text_link(self, obj):
-    return u"".join(["<a href='"+reverse('admin:sheets_skill_changelist') + "?q=" + i + "'>" + i + "</a> »" for i in obj.skill.previous_categories_text.split(FIX_DELIM)])
+    return u"".join(["<a href='"+reverse('admin:sheets_skill_changelist') + "?q=" + i + "'>" + i + "</a> »" for i in obj.skill.previous_categories_text_split()])
   _get_previous_categories_text_link.allow_tags = True
   
   class Meta:

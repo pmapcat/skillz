@@ -1,0 +1,54 @@
+{% load i18n %}
+<!DOCTYPE html>
+<html>
+  {% block head %}
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>{% block title %}{% trans 'Система навыков' %} {% endblock %}</title>
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css"
+          integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w"
+          crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto+Slab&amp;subset=cyrillic" rel="stylesheet">
+    <style>
+     h1,h2,h3,h4,h5,h6 {
+       font-family: 'Roboto Slab', serif !important;
+     }
+     * {
+       font-family: 'Open Sans', sans-serif !important;
+     }
+     #container {
+       padding-right: 15px;
+       padding-left: 15px;
+       margin-right: auto;
+       margin-left: auto;
+     }
+     @media (min-width: 768px) {
+       #container {
+         width: 750px;
+       }
+     }
+     @media (min-width: 992px) {
+       #container {
+         width: 970px !important;
+       }
+     }
+     @media (min-width: 1200px) {
+       #container {
+         width: 1170px !important;
+       }
+     }
+    </style>
+    {% block extrastyle %}
+    {% endblock %}
+  </head>
+  {% endblock %}
+  <body>
+    <div id="container">
+      {% block container %}
+      {% endblock %}
+    </div>
+  </body>
+</html>
+
+

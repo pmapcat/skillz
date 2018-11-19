@@ -12,7 +12,7 @@ import ipdb
 
 from django.utils.translation import ugettext_lazy as _
 from django.core.exceptions import ValidationError
-from .consts import FIX_DELIM_SPACED
+from .consts import FIX_DELIM_SPACED,FIX_DELIM
 
 from django.db import models
 
@@ -57,8 +57,10 @@ class Skill(models.Model):
     return Skill.objects.filter(previous_categories__exact=self)
   
   def __unicode__(self):
-    return self.previous_categories_text
-
+    return str(self.max_level) + " | " + self.previous_categories_text
+  def previous_categories_text_split(self):
+    return [i.strip() for i in self.previous_categories_text.split(FIX_DELIM)]
+  
   def __get_previous_categories_text(self):
     if not self.id:
       return self.name
@@ -83,6 +85,10 @@ class SkillInstance(models.Model):
   spreadsheet = models.ForeignKey(SpreadSheet,verbose_name=_(u"Тетрадь наблюдений"),on_delete=models.CASCADE,related_name='skill_instances')
   skill_level = models.IntegerField(verbose_name=_(u"Уровень навыка"),db_index=True)
   date_added  = models.DateTimeField(verbose_name=_(u"Дата измерения"),auto_now=True)
+  
+  @property
+  def skill_percentage(self):
+    return int((float(self.skill_level) / float(self.skill.max_level)) * 100)
   
   class Meta:
     verbose_name = _(u"Наблюдение навыка")
