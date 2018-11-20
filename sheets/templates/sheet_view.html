@@ -91,9 +91,6 @@
  a:hover {
    color: #036;
  }
- .inforce-link-hover:hover {
-   color: #036 !important; 
- }
  
  .link-color {
    background: #447e9b;
@@ -117,6 +114,9 @@
    background: #D32F2F !important;
    box-shadow: 1px 1px 20px 0px #9E9E9E3b;
  }
+ .red-color {
+   color: #D32F2F;
+ }
 
  .red-button:hover {
    background: #FF5252 !important
@@ -127,14 +127,16 @@
 {% for skill_root,skill_group in observations %}
 <div class="skill-instance pure-g" style="">
   <div class="pure-u-1-3 tooltip-toggle"  aria-label="{{skill_root.skill.description}}" style="font-size:0.5em;">
+    
 
     {% for skill in skill_root.skill.previous_categories_text_split %}
-    <a href=" {% url 'sheet_view' pk=q_pk filter_date=q_filter_date level=q_level %}?q={{skill}}" class="inforce-link-hover" style="{% if forloop.first %}color:black;font-size:1.5em;{% endif %}">{{skill}}</a> 
+    <a href=" {% url 'sheet_view' pk=q_pk filter_date=q_filter_date level=q_level %}?q={{skill}}" class=" {% if skill == q %} red-color {% endif %}" style="{% if forloop.first %}font-size:1.5em;{% endif %}">{{skill}}</a> 
     {% if not forloop.last %}
     <span style="font-size:1em;"> · </span>
     {% endif %}
     
     {% endfor %}
+    <a href="{% url 'admin:sheets_skill_change' skill_root.skill.pk %}" target="_blank"" style="font-size:1em;" class="red-color"><b> [р] </b></a>
     </br>
   </div>
   <div class="pure-u-2-3">
