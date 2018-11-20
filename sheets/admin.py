@@ -86,6 +86,8 @@ class SkillInstanceAdmin(admin.ModelAdmin):
   def _get_previous_categories_text_link(self, obj):
     return u"".join(["<a href='"+reverse('admin:sheets_skill_changelist') + "?q=" + i + "'>" + i + "</a> »" for i in obj.skill.previous_categories_text_split()])
   _get_previous_categories_text_link.allow_tags = True
+  def has_module_permission(self, request):
+    return False  
   
   class Meta:
     model=SkillInstance
