@@ -9,7 +9,7 @@ from .views import SheetView
 from django.conf.urls import url, include
 
 urlpatterns = [
-     url("^sheet_view/(?P<pk>\d+)/$",SheetView.as_view(),name="sheet_view"),
+     url("^sheet_view/(?P<pk>\d+)/(?P<filter_date>first|last|all)/(?P<level>all|root)$",SheetView.as_view(),name="sheet_view"),
 ]
 
 

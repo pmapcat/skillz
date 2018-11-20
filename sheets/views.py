@@ -11,6 +11,8 @@ import ipdb
 from django.views.generic import TemplateView
 from django.shortcuts import render
 from django.urls import reverse
+from itertools import groupby
+
 
 from .models import SpreadSheet
 
@@ -25,24 +27,31 @@ class SheetView(TemplateView):
     context = super(SheetView, self).get_context_data(**kwargs)
     ## narrow by:
     q = self.request.GET.get('q')
-    
-    by_amount = self.request.GET.get('amount')
-    by_time   = self.request.GET.get('time')
-    by_date   = "some date"
-    by_name   = "some skill name"
+    if q == "None":
+      q = None
     sp = SpreadSheet.objects.get(pk=context.get('pk'))
     context["spread_sheet"] = sp
     observations = sp.skill_instances
     if q:
       observations = observations.filter(skill__previous_categories_text__icontains=q)
-    # if by_amount:
-    #   observations = observations.filter(amount_of_next_skills_=q)
+      
+    if kwargs.get("level") == "root":
+      observations = observations.filter(skill__previous_categories=None)
       
     # ipdb.set_trace()
-    context["observations"] = observations.order_by("skill__previous_categories_text").all()
-    context["q"] = q
+    context["observations"] = [(item[0],item,) for item in [list(v) for k,v in groupby(observations.order_by("skill__previous_categories_text").all(),lambda x: x.skill.name)]]
     
-    context['self_link'] = reverse('sheet_view',kwargs={"pk":sp.pk})
+    if kwargs.get("filter_date") == "first":
+      context["observations"] = [(root,[children[0]]) for root,children in context["observations"]]
+    if kwargs.get("filter_date") == "last":
+      context["observations"] = [(root,[children[-1]]) for root,children in context["observations"]]
+    
+    context["q"] = q
+
+    context["q_pk"] = sp.pk
+    context["q_filter_date"] = kwargs.get("filter_date")
+    context["q_level"] = kwargs.get("level")
+    
     return context
 
 

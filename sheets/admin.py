@@ -52,7 +52,7 @@ class SkillAdmin(admin.ModelAdmin):
 
     
 class SkillInstanceInLine(admin.StackedInline):
-  extra=0
+  extra=1
   def max_level(self,skill_instance):
     return skill_instance.skill.max_level
   max_level.short_description = _(u"Максимальный уровень навыка")
@@ -67,7 +67,7 @@ class SpreadSheetAdmin(admin.ModelAdmin):
   inlines = [SkillInstanceInLine]
 
   def watch_sheet(self,model_instance):
-    return "<a href='%s'>%s</a>"%(reverse("sheet_view",kwargs={"pk":model_instance.pk}),_(u"Карта"))
+    return "<a href='%s'>%s</a>"%(reverse("sheet_view",kwargs={"pk":model_instance.pk,"filter_date":"all","level":"all"}),_(u"Карта"))
   watch_sheet.short_description = _(u"Смотреть")
   watch_sheet.allow_tags = True
 

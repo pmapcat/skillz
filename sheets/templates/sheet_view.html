@@ -1,49 +1,155 @@
 {% extends "_base.html" %}
 {% load i18n %}
 
-{% block title %}{% trans "Ребенок, статистика: " %} spread_sheet.child {% endblock %}
+{% block title %}{% trans "Ребенок, статистика: " %} {{spread_sheet.child}} {% endblock %}
 
 {% block extrastyle %}
 <style>
-h1 {
-  font-size: 2em;
-}
+ 
 </style>
+<link href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto+Slab&amp;subset=cyrillic" rel="stylesheet">
 
 {% endblock %}
 
 {% block container %}
-<h1>{{spread_sheet.child}}</h1>
-<p><a href="{% url 'admin:sheets_spreadsheet_change' spread_sheet.pk %}">{% trans 'Редактировать' %}</a></p>
-<a href="{% url 'admin:sheets_skillinstance_add'%}?spreadsheet={{spread_sheet.pk}}"> {% trans "Новое наблюдение" %}</a>
+<div style="font-size:0.5em;">
+  <h1>
+    <a  href="{% url 'admin:sheets_spreadsheet_changelist' %}">{% trans 'Назад' %}</a>
+    « <span style="color:#D32F2F">{% trans "Карта:" %}</span> {{spread_sheet.child}} [ {{spread_sheet.age}} ] </h1>
+  <div style="text-align:right;">
+    <a class="pure-button button-success" href="{% url 'admin:sheets_spreadsheet_change' spread_sheet.pk %}" target="_blank">{% trans 'Редактировать' %}</a>
+    <a class="pure-button" href="{% url 'admin:sheets_spreadsheet_changelist' %}">{% trans 'К списку карт' %}</a>
+  </div>
+  <br>
 
-<p>
+  <div style="text-align:right">
+    <a class="pure-button red-button" href="{% url 'admin:sheets_skillinstance_add'%}?spreadsheet={{spread_sheet.pk}}" target="_blank" > {% trans "Новое наблюдение" %}</a>
+  </div>
+
+  <b>|</b> <a href="{% url 'sheet_view' pk=q_pk filter_date='all'         level='all' %}">{% trans "Сбросить" %} </a> <b>|</b>
+  <br>
+  
+  <b>|</b>
+  <a href="{% url 'sheet_view' pk=q_pk filter_date='all' level=q_level %}?q={{q}}">
+    {% if filter_date == 'all' %}
+    <b> {% trans "Все наблюдения"%} </b>
+    {% else %}
+    {% trans "Все наблюдения"%}
+    {% endif %}
+  </a> <b>|</b>
+  
+  <a href="{% url 'sheet_view' pk=q_pk filter_date='first' level=q_level %}?q={{q}}">
+    {% if filter_date == 'first' %}
+    <b> {% trans "Первое наблюдение"%} </b>
+    {% else %}
+    {% trans "Первое наблюдение"%}
+    {% endif %}
+  </a> <b>|</b>
+  
+  <a href="{% url 'sheet_view' pk=q_pk filter_date='last' level=q_level %}?q={{q}}">
+    {% if filter_date == 'last' %}
+    <b> {% trans "Последнее наблюдение"%} </b>
+    {% else %}
+    {% trans "Последнее наблюдение"%}
+    {% endif %}
+  </a> <b>|</b>
+  <br>
+  
+  <b>|</b>
+  <a href="{% url 'sheet_view' pk=q_pk filter_date=q_filter_date level='all' %}?q={{q}}">
+    {% if q_level == 'all' %}
+    <b> {% trans "Все уровни" %} </b>
+    {% else %}
+    {% trans "Все уровни" %}
+    {% endif %}
+  </a> <b>|</b>
+  <a href="{% url 'sheet_view' pk=q_pk filter_date=q_filter_date level='root' %}?q={{q}}">
+    {% if q_level == 'root' %}
+    <b> {% trans "Только корни" %} </b>
+    {% else %}
+    {% trans "Только корни" %}
+    {% endif %}
+
+  </a> <b>|</b>
+  <br>
+
   {% if q %}
-  <a href="{{self_link}}">{% trans "все"%} </a> » <b>{{q}}</b> 
+  <b>|</b>
+  <a href="{% url 'sheet_view' pk=q_pk filter_date=q_filter_date level=q_level %}">
+    {% trans "Навык:" %}  <b>{{q}}</b>
+  </a>
+  <b>|</b>
   {% endif %}
-</p>
+</div>
 
-{% for skill_instance in observations %}
-<div class="skill-instance pure-g">
-  
-  <div class="pure-u-1-3">
-    <a href="{% url 'admin:sheets_skillinstance_change' skill_instance.pk %}"> {% trans "Редактировать" %}</a>
-    <a href="{% url 'admin:sheets_skillinstance_add'%}?skill={{skill_instance.skill.pk}}&spreadsheet={{spread_sheet.pk}}"> {% trans "Добавить наблюдение" %}</a>
-    {% include "_tooltip.html" with tooltip=skill_instance.skill.description %}
-    {% for skill in skill_instance.skill.previous_categories_text_split %}
-    <a href="{{self_link}}?q={{skill}}">{{skill}}</a> »
+
+<style>
+ a {
+   text-decoration: none;
+   color: #447e9b;
+ }
+ a:hover {
+   color: #036;
+ }
+ .inforce-link-hover:hover {
+   color: #036 !important; 
+ }
+ 
+ .link-color {
+   background: #447e9b;
+ }
+ .link-color:hover {
+   background: #036 !important
+ }
+
+ .pure-button:hover {
+   color: white ;
+ }
+ .pure-button {
+   background: #79aec8 !important
+   color:white;
+ }
+
+ .red-button {
+   background: white !important;
+   color: white !important;
+   font-weight: 900;
+   background: #D32F2F !important;
+   box-shadow: 1px 1px 20px 0px #9E9E9E3b;
+ }
+
+ .red-button:hover {
+   background: #FF5252 !important
+ }
+ 
+</style>
+{% include "_tooltip.html" %}
+{% for skill_root,skill_group in observations %}
+<div class="skill-instance pure-g" style="">
+  <div class="pure-u-1-3 tooltip-toggle"  aria-label="{{skill_root.skill.description}}" style="font-size:0.5em;">
+
+    {% for skill in skill_root.skill.previous_categories_text_split %}
+    <a href=" {% url 'sheet_view' pk=q_pk filter_date=q_filter_date level=q_level %}?q={{skill}}" class="inforce-link-hover" style="{% if forloop.first %}color:black;font-size:1.5em;{% endif %}">{{skill}}</a> 
+    {% if not forloop.last %}
+    <span style="font-size:1em;"> · </span>
+    {% endif %}
+    
     {% endfor %}
-    
+    </br>
   </div>
-  <div class="pure-u-1-3">
-    {{skill_instance.date_added}}
-  </div>
-  
-  <div class="pure-u-1-3">
-    {{skill_instance.skill_level}}/{{skill_instance.skill.max_level}}
-    <div style="background:green;width:{{skill_instance.skill_percentage}}%;height:10px;">
+  <div class="pure-u-2-3">
+    {% for skill_instance in skill_group %}
+    <a class=""  href="{% url 'admin:sheets_skillinstance_change' skill_root.pk %}" target="_blank">
+      <div style="width:{{skill_instance.skill_percentage}}%;color:white;height:10px;margin:0.1em;" class="tooltip-toggle link-color"
+           aria-label="{{skill_instance.skill_level}}/{{skill_instance.skill.max_level}} {{skill_instance.date_added}} [{% trans "клик для редактирования" %}] ">
+      </div>
+    </a>
+    {% endfor %}
+    <div style="text-align:right;margin-bottom:1em;">
+      <a class="pure-button red-button" style="font-size:0.3em;" target="_blank" href="{% url 'admin:sheets_skillinstance_add'%}?skill={{skill_root.skill.pk}}&spreadsheet={{spread_sheet.pk}}">
+        +
+      </a>
     </div>
-    
     
   </div>
   
