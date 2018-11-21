@@ -18,6 +18,7 @@ Installation is the same as any other Django app.
   * by observation level
   * by drilldown level
 * User friendly interface for making skill development taxonomies
+* Sheets/tracking/user management groups and stuff
 * Nice UI
 
 ## Below are a couple of screens: 
