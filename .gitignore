@@ -1,1 +1,9 @@
 __env__/*
+collected_static/*
+### Django ###
+*.log
+*.pot
+*.pyc
+__pycache__/
+*.py[cod]
+
