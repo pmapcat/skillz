@@ -20,15 +20,18 @@ Installation is the same as any other Django app.
 * User friendly interface for making skill development taxonomies
 * Nice UI
 
-Below are a couple of screens: 
+## Below are a couple of screens: 
 
-<p style="text-align:center;">
+### Login screen
 
 ![login](https://raw.githubusercontent.com/michaelleachim/skillz/master/screens/login.png)
+
+## Adding skill screen
 ![adding screen](https://raw.githubusercontent.com/michaelleachim/skillz/master/screens/skills_adding.png)
+## Tracking skill
+
 ![tracking screen](https://raw.githubusercontent.com/michaelleachim/skillz/master/screens/skills_tracking.png)
 
-</p>
 
 
 
