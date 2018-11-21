@@ -22,10 +22,13 @@ Installation is the same as any other Django app.
 
 Below are a couple of screens: 
 
+<p align="center">
 
 ![login](https://raw.githubusercontent.com/michaelleachim/skillz/master/screens/login.png)
 ![adding screen](https://raw.githubusercontent.com/michaelleachim/skillz/master/screens/skills_adding.png)
 ![tracking screen](https://raw.githubusercontent.com/michaelleachim/skillz/master/screens/skills_tracking.png)
+
+</p>
 
 
 
