@@ -21,6 +21,8 @@ Installation is the same as any other Django app.
 * Nice UI
 
 Below are a couple of screens: 
+
+
 ![login](https://raw.githubusercontent.com/michaelleachim/skillz/master/screens/login.png)
 ![adding screen](https://raw.githubusercontent.com/michaelleachim/skillz/master/screens/skills_adding.png)
 ![tracking screen](https://raw.githubusercontent.com/michaelleachim/skillz/master/screens/skills_tracking.png)
