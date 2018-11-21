@@ -1,5 +1,5 @@
 __env__/*
-collected_static/*
+static/*
 ### Django ###
 *.log
 *.pot

@@ -120,4 +120,4 @@ USE_TZ = True
 DEFAULT_CHARSET = 'utf-8'
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR,'collected_static/')
+STATIC_ROOT = os.path.join(BASE_DIR,'static/')
